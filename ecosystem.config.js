@@ -39,7 +39,8 @@ module.exports = {
       user : 'ec2-user',  // ec2-user  root
       host : 'ec2-54-202-198-206.us-west-2.compute.amazonaws.com',
       ref  : 'origin/master',
-      repo : 'git@git.iotccoin.com:fe/ipapk.git',
+      // repo : 'git@git.iotccoin.com:fe/ipapk.git',
+      repo : 'git@github.com:gavinwyf/IPA-APK.git',
       path : '/var/www/ipapk',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     },
