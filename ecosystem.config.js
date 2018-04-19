@@ -36,10 +36,10 @@ module.exports = {
    */
   deploy : {
     production : {
-      user : 'root',
+      user : 'ec2-user',  // ec2-user  root
       host : 'ec2-54-202-198-206.us-west-2.compute.amazonaws.com',
       ref  : 'origin/master',
-      repo : 'git@github.com:repo.git',
+      repo : 'git@git.iotccoin.com:fe/ipapk.git',
       path : '/var/www/ipapk',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     },

@@ -58,10 +58,12 @@ $ ipapk-server
 ## 线上部署
 
 ```bash
-npm run build # 单测, 编译 ES6/7 代码至 ES5
-vim pm2.js # 检查 pm2 的配置
-pm2 start pm2.js # 请确保已经 global 安装 pm2    (npm i pm2-cli -g)
+npm start / npm run dev #本地开发
+vim ecosystem.config.js # 检查 pm2 的配置
+pm2 start ipapk-server.js # 请确保已经 global 安装 pm2    (npm i pm2-cli -g)
+pm2 deploy ecosystem.config.js production setup  # 线上服务器部署
 cp nginx.conf /etc/nginx/conf.d/YourProject.conf # 自行配置 nginx 反代
+
 ```
 
 ## 下载
