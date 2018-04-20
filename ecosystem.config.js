@@ -9,7 +9,7 @@ module.exports = {
     {
       name      : 'ipapk',
       script    : 'ipapk-server.js',
-      watch: ['web'], // 默认关闭watch 可替换为 ['web']
+      watch: false, // 默认关闭watch 可替换为 ['web']
       ignore_watch: ['node_modules', 'build', 'logs'],
       out_file: '/home/ec2-user/pm2/logs/out.log', // 日志输出
       error_file: '/home/ec2-user/pm2/logs/error.log', // 错误日志
