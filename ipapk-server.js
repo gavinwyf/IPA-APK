@@ -105,7 +105,8 @@ excuteDB("CREATE TABLE IF NOT EXISTS info (\
 process.exit = exit
 
 // CLI
-var basePath = "https://{0}:{1}".format(ipAddress, port);
+var hostName = "ec2-54-202-198-206.us-west-2.compute.amazonaws.com";
+var basePath = "https://{0}:{1}".format(hostName, port);  // ipAddress
 if (!exit.exited) {
   main();
 }
