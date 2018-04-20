@@ -106,7 +106,7 @@ process.exit = exit
 
 // CLI
 // var basePath = "https://{0}:{1}".format(ipAddress, port);
-var basePath = "https://ec2-54-202-198-206.us-west-2.compute.amazonaws.com";
+var basePath = "http://ec2-54-202-198-206.us-west-2.compute.amazonaws.com";
 if (!exit.exited) {
   main();
 }
