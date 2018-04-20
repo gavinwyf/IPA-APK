@@ -11,8 +11,8 @@ module.exports = {
       script    : 'ipapk-server.js',
       watch: ['web'], // 默认关闭watch 可替换为 ['web']
       ignore_watch: ['node_modules', 'build', 'logs'],
-      out_file: '/logs/out.log', // 日志输出
-      error_file: '/logs/error.log', // 错误日志
+      out_file: '/home/ec2-user/pm2/logs/out.log', // 日志输出
+      error_file: '/home/ec2-user/pm2/logs/error.log', // 错误日志
       max_memory_restart: '900M', // 超过多大内存自动重启，仅防止内存泄露有意义，需要根据自己的业务设置
       // exec_mode: "fork",  // cluster_mode 集群  默认 fork
       env: {
