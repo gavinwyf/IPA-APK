@@ -106,8 +106,10 @@ response:
 ```
 命令行:`curl 'https://ip:port/upload' -F "package=@文件路径" -F "changelog=xxx" --insecure`，不能去掉`@`
 
-> eg. curl 'https:/172.16.20.239:1234/upload' -F "package=@/Users/wyf.wang/Desktop/IOTC.ipa" -F "changelog=iotc1.0.0" --insecure
-
+> 上传命令
+>  
+> curl 'https:/172.16.20.239:1234/upload' -F "package=@/Users/wyf.wang/Desktop/IOTC.ipa" -F "changelog=iotc1.0.0 IOS" --insecure
+> curl 'https:/172.16.20.239:1234/upload' -F "package=@/Users/wyf.wang/Desktop/IOTC.apk" -F "changelog=iotc1.0.0 Android" --insecure
 
 ### 所有App
 path:
