@@ -25,6 +25,8 @@
     "start": "./node_modules/.bin/nodemon ipapk-server.js",
     "dev": "./node_modules/.bin/nodemon ipapk-server.js",
     "prd": "pm2 start ipapk-server.js",
+    "setup": "pm2 deploy ecosystem.config.js production setup",
+    "deploy": "pm2 deploy ecosystem.config.js production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "node install.js"
   },

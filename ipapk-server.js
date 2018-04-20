@@ -44,15 +44,16 @@ program
 
 var port = program.port || 1234;
 
-var ipAddress = program.host || underscore
-  .chain(require('os').networkInterfaces())
-  .values()
-  .flatten()
-  .find(function(iface) {
-    return iface.family === 'IPv4' && iface.internal === false;
-  })
-  .value()
-  .address;
+var ipAddress = program.host || "localhost";
+// || underscore
+//   .chain(require('os').networkInterfaces())
+//   .values()
+//   .flatten()
+//   .find(function(iface) {
+//     return iface.family === 'IPv4' && iface.internal === false;
+//   })
+//   .value()
+//   .address;
 
 var pageCount = 5;
 var serverDir = os.homedir() + "/.ipapk-server/"
