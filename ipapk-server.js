@@ -127,8 +127,8 @@ function before(obj, method, fn) {
 
 function main() {
 
-  console.log("static path", basePath);
-  console.log("Url path", ipAddress, port);
+  console.log("staticPath--", basePath);
+  console.log("UrlPath--", ipAddress, port);
 
   var key;
   var cert;
@@ -276,16 +276,16 @@ function parseAppAndInsertToDb(filePath, changelog, callback, errorCallback) {
   Promise.all([parse(filePath), extract(filePath, guid)]).then(values => {
     var info = values[0]
     console.log("info--------", values[0], "------------", values[1]);
-    // info["guid"] = guid
-    // info["changelog"] = changelog
-    // excuteDB("INSERT INTO info (guid, platform, build, bundleID, version, name, changelog) VALUES (?, ?, ?, ?, ?, ?, ?);",
-    //   [info["guid"], info["platform"], info["build"], info["bundleID"], info["version"], info["name"], changelog], function (error) {
-    //     if (!error) {
-    //       callback(info)
-    //     } else {
-    //       errorCallback(error)
-    //     }
-    //   });
+    info["guid"] = guid
+    info["changelog"] = changelog
+    excuteDB("INSERT INTO info (guid, platform, build, bundleID, version, name, changelog) VALUES (?, ?, ?, ?, ?, ?, ?);",
+      [info["guid"], info["platform"], info["build"], info["bundleID"], info["version"], info["name"], changelog], function (error) {
+        if (!error) {
+          callback(info)
+        } else {
+          errorCallback(error)
+        }
+      });
   }, reason => {
     errorCallback(reason)
   })
@@ -307,14 +307,14 @@ function parseIpa(filename) {
     extract(fd, function (err, info, raw) {
       console.log("parseIpa----------", err, "----------", info, "---------", raw);
       if (err) reject(err);
-      // var data = info[0];
-      // var info = {}
-      // info["platform"] = "ios"
-      // info["build"] = data.CFBundleVersion,
-      //   info["bundleID"] = data.CFBundleIdentifier,
-      //   info["version"] = data.CFBundleShortVersionString,
-      //   info["name"] = data.CFBundleName
-      // resolve(info)
+      var data = info[0];
+      var info = {}
+      info["platform"] = "ios"
+      info["build"] = data.CFBundleVersion,
+        info["bundleID"] = data.CFBundleIdentifier,
+        info["version"] = data.CFBundleShortVersionString,
+        info["name"] = data.CFBundleName
+      resolve(info)
     });
   });
 }
@@ -324,15 +324,15 @@ function parseApk(filename) {
     apkParser3(filename, function (err, data) {
       console.log("parseApk---------", err, "-----------", data)
       if (err) reject(err);
-      // var package = parseText(data.package)
-      // var info = {
-      //   "name": data["application-label"].replace(/'/g, ""),
-      //   "build": package.versionCode,
-      //   "bundleID": package.name,
-      //   "version": package.versionName,
-      //   "platform": "android"
-      // }
-      // resolve(info)
+      var package = parseText(data.package)
+      var info = {
+        "name": data["application-label"].replace(/'/g, ""),
+        "build": package.versionCode,
+        "bundleID": package.name,
+        "version": package.versionName,
+        "platform": "android"
+      }
+      resolve(info)
     });
   });
 }
@@ -351,40 +351,40 @@ function extractApkIcon(filename, guid) {
     apkParser3(filename, function (err, data) {
       console.log("extractApkIcon---------", err, "-----------", data)
       if (err) reject(err);
-      // var iconPath = false;
-      // [640, 320, 240, 160].every(i => {
-      //   if (typeof data["application-icon-" + i] !== 'undefined') {
-      //     iconPath = data["application-icon-" + i];
-      //     return false;
-      //   }
-      //   return true;
-      // });
-      // if (!iconPath) {
-      //   reject("can not find icon ");
-      // }
+      var iconPath = false;
+      [640, 320, 240, 160].every(i => {
+        if (typeof data["application-icon-" + i] !== 'undefined') {
+          iconPath = data["application-icon-" + i];
+          return false;
+        }
+        return true;
+      });
+      if (!iconPath) {
+        reject("can not find icon ");
+      }
 
-      // iconPath = iconPath.replace(/'/g, "")
-      // var tmpOut = iconsDir + "/{0}.png".format(guid)
-      // var zip = new AdmZip(filename);
-      // var ipaEntries = zip.getEntries();
-      // var found = false
-      // ipaEntries.forEach(function (ipaEntry) {
-      //   if (ipaEntry.entryName.indexOf(iconPath) != -1) {
-      //     var buffer = new Buffer(ipaEntry.getData());
-      //     if (buffer.length) {
-      //       found = true
-      //       fs.writeFile(tmpOut, buffer, function (err) {
-      //         if (err) {
-      //           reject(err)
-      //         }
-      //         resolve({ "success": true })
-      //       })
-      //     }
-      //   }
-      // })
-      // if (!found) {
-      //   reject("can not find icon ")
-      // }
+      iconPath = iconPath.replace(/'/g, "")
+      var tmpOut = iconsDir + "/{0}.png".format(guid)
+      var zip = new AdmZip(filename);
+      var ipaEntries = zip.getEntries();
+      var found = false
+      ipaEntries.forEach(function (ipaEntry) {
+        if (ipaEntry.entryName.indexOf(iconPath) != -1) {
+          var buffer = new Buffer(ipaEntry.getData());
+          if (buffer.length) {
+            found = true
+            fs.writeFile(tmpOut, buffer, function (err) {
+              if (err) {
+                reject(err)
+              }
+              resolve({ "success": true })
+            })
+          }
+        }
+      })
+      if (!found) {
+        reject("can not find icon ")
+      }
     });
   })
 }
