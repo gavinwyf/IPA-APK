@@ -321,6 +321,7 @@ function parseIpa(filename) {
 function parseApk(filename) {
   return new Promise(function (resolve, reject) {
     apkParser3(filename, function (err, data) {
+      console.log("parseApk---------", err, data)
       var package = parseText(data.package)
       var info = {
         "name": data["application-label"].replace(/'/g, ""),
