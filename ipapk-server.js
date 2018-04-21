@@ -276,16 +276,16 @@ function parseAppAndInsertToDb(filePath, changelog, callback, errorCallback) {
   Promise.all([parse(filePath), extract(filePath, guid)]).then(values => {
     var info = values[0]
     console.log("info--------", values[0], "------------", values[1]);
-    info["guid"] = guid
-    info["changelog"] = changelog
-    excuteDB("INSERT INTO info (guid, platform, build, bundleID, version, name, changelog) VALUES (?, ?, ?, ?, ?, ?, ?);",
-      [info["guid"], info["platform"], info["build"], info["bundleID"], info["version"], info["name"], changelog], function (error) {
-        if (!error) {
-          callback(info)
-        } else {
-          errorCallback(error)
-        }
-      });
+    // info["guid"] = guid
+    // info["changelog"] = changelog
+    // excuteDB("INSERT INTO info (guid, platform, build, bundleID, version, name, changelog) VALUES (?, ?, ?, ?, ?, ?, ?);",
+    //   [info["guid"], info["platform"], info["build"], info["bundleID"], info["version"], info["name"], changelog], function (error) {
+    //     if (!error) {
+    //       callback(info)
+    //     } else {
+    //       errorCallback(error)
+    //     }
+    //   });
   }, reason => {
     errorCallback(reason)
   })
@@ -305,15 +305,16 @@ function parseIpa(filename) {
   return new Promise(function (resolve, reject) {
     var fd = fs.openSync(filename, 'r');
     extract(fd, function (err, info, raw) {
-      if (err) reject(err);
-      var data = info[0];
-      var info = {}
-      info["platform"] = "ios"
-      info["build"] = data.CFBundleVersion,
-        info["bundleID"] = data.CFBundleIdentifier,
-        info["version"] = data.CFBundleShortVersionString,
-        info["name"] = data.CFBundleName
-      resolve(info)
+      console.log("parseIpa----------", err, "----------", info, "---------", raw);
+      // if (err) reject(err);
+      // var data = info[0];
+      // var info = {}
+      // info["platform"] = "ios"
+      // info["build"] = data.CFBundleVersion,
+      //   info["bundleID"] = data.CFBundleIdentifier,
+      //   info["version"] = data.CFBundleShortVersionString,
+      //   info["name"] = data.CFBundleName
+      // resolve(info)
     });
   });
 }
@@ -322,15 +323,15 @@ function parseApk(filename) {
   return new Promise(function (resolve, reject) {
     apkParser3(filename, function (err, data) {
       console.log("parseApk---------", err, data)
-      var package = parseText(data.package)
-      var info = {
-        "name": data["application-label"].replace(/'/g, ""),
-        "build": package.versionCode,
-        "bundleID": package.name,
-        "version": package.versionName,
-        "platform": "android"
-      }
-      resolve(info)
+      // var package = parseText(data.package)
+      // var info = {
+      //   "name": data["application-label"].replace(/'/g, ""),
+      //   "build": package.versionCode,
+      //   "bundleID": package.name,
+      //   "version": package.versionName,
+      //   "platform": "android"
+      // }
+      // resolve(info)
     });
   });
 }
