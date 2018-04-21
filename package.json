@@ -3,8 +3,8 @@
   "version": "0.2.9",
   "description": "Create a HTTPS Server to install ipa and apk locally",
   "dependencies": {
+    "adbkit-apkreader": "^3.0.1",
     "adm-zip": "^0.4.7",
-    "apk-parser": "^0.1.7",
     "apk-parser3": "^0.1.7",
     "commander": "^2.9.0",
     "dbushell-grunt-mustatic": "^0.1.1",
@@ -17,6 +17,7 @@
     "sqlite3": "^3.1.8",
     "strftime": "^0.9.2",
     "underscore": "^1.8.3",
+    "util": "^0.10.3",
     "uuid": "^3.0.1"
   },
   "bin": {

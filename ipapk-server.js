@@ -17,8 +17,11 @@ var multiparty = require('multiparty');
 var sqlite3 = require('sqlite3');
 var uuidV4 = require('uuid/v4');
 var extract = require('ipa-extract-info');
-// var apkParser3 = require("apk-parser3");
-var apkParser3 = require("apk-parser");
+var apkParser3 = require("apk-parser3");
+
+const util = require('util');
+const ApkReader = require('adbkit-apkreader');
+
 require('shelljs/global');
 
 /** 格式化输入字符串**/
@@ -43,7 +46,7 @@ program
   .option('-h, --host <host>', 'set host for server (defaults is your LAN ip)')
   .parse(process.argv);
 
-var port = program.port || 1234;
+var port = program.port || 8888;
 
 var ipAddress = program.host || "localhost";
 // || underscore
@@ -129,7 +132,7 @@ function before(obj, method, fn) {
 function main() {
 
   console.log("staticPath--", basePath);
-  console.log("UrlPath--", ipAddress, port);
+  console.log("UrlPath--", "https://"+ ipAddress+":"+port);
 
   var key;
   var cert;
@@ -275,16 +278,16 @@ function parseAppAndInsertToDb(filePath, changelog, callback, errorCallback) {
   Promise.all([parse(filePath), extract(filePath, guid)]).then(values => {
     var info = values[0]
     console.log("info--------", values[0], "------------", values[1]);
-    info["guid"] = guid
-    info["changelog"] = changelog
-    excuteDB("INSERT INTO info (guid, platform, build, bundleID, version, name, changelog) VALUES (?, ?, ?, ?, ?, ?, ?);",
-      [info["guid"], info["platform"], info["build"], info["bundleID"], info["version"], info["name"], changelog], function (error) {
-        if (!error) {
-          callback(info)
-        } else {
-          errorCallback(error)
-        }
-      });
+    // info["guid"] = guid
+    // info["changelog"] = changelog
+    // excuteDB("INSERT INTO info (guid, platform, build, bundleID, version, name, changelog) VALUES (?, ?, ?, ?, ?, ?, ?);",
+    //   [info["guid"], info["platform"], info["build"], info["bundleID"], info["version"], info["name"], changelog], function (error) {
+    //     if (!error) {
+    //       callback(info)
+    //     } else {
+    //       errorCallback(error)
+    //     }
+    //   });
   }, reason => {
     errorCallback(reason)
   })
@@ -320,19 +323,25 @@ function parseIpa(filename) {
 
 function parseApk(filename) {
   return new Promise(function (resolve, reject) {
-    apkParser3(filename, function (err, data) {
-      console.log("parseApk---------", err, "-----------", data)
-      if (err) return reject(err);
-      var package = parseText(data.package)
-      var info = {
-        "name": data["application-label"].replace(/'/g, ""),
-        "build": package.versionCode,
-        "bundleID": package.name,
-        "version": package.versionName,
-        "platform": "android"
-      }
-      resolve(info)
-    });
+
+    ApkReader.open(filename)
+      .then(reader => reader.readManifest())
+      .then(manifest => {
+        console.log("Data-----------------", util.inspect(manifest, { depth: null }))
+      })
+    // apkParser3(filename, function (err, data) {
+    //   console.log("parseApk---------", err, "-----------", data)
+    //   if (err) return reject(err);
+    //   var package = parseText(data.package)
+    //   var info = {
+    //     "name": data["application-label"].replace(/'/g, ""),
+    //     "build": package.versionCode,
+    //     "bundleID": package.name,
+    //     "version": package.versionName,
+    //     "platform": "android"
+    //   }
+    //   resolve(info)
+    // });
   });
 }
 
