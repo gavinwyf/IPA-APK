@@ -349,6 +349,8 @@ function parseText(text) {
 function extractApkIcon(filename, guid) {
   return new Promise(function (resolve, reject) {
     apkParser3(filename, function (err, data) {
+      console.log("extractApkIcon---------", err, "-----------", data)
+      if (err) reject(err);
       // var iconPath = false;
       // [640, 320, 240, 160].every(i => {
       //   if (typeof data["application-icon-" + i] !== 'undefined') {
