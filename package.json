@@ -4,7 +4,8 @@
   "description": "Create a HTTPS Server to install ipa and apk locally",
   "dependencies": {
     "adm-zip": "^0.4.7",
-    "apk-parser3": "^0.1.6",
+    "apk-parser": "^0.1.7",
+    "apk-parser3": "^0.1.7",
     "commander": "^2.9.0",
     "dbushell-grunt-mustatic": "^0.1.1",
     "express": "^4.13.1",
