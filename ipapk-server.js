@@ -322,7 +322,7 @@ function parseApk(filename) {
   return new Promise(function (resolve, reject) {
     apkParser3(filename, function (err, data) {
       console.log("parseApk---------", err, "-----------", data)
-      if (err) reject(err);
+      if (err) return reject(err);
       var package = parseText(data.package)
       var info = {
         "name": data["application-label"].replace(/'/g, ""),
@@ -349,7 +349,7 @@ function extractApkIcon(filename, guid) {
   return new Promise(function (resolve, reject) {
     apkParser3(filename, function (err, data) {
       console.log("extractApkIcon---------", err, "-----------", data)
-      if (err) reject(err);
+      if (err) return reject(err);
       var iconPath = false;
       [640, 320, 240, 160].every(i => {
         if (typeof data["application-icon-" + i] !== 'undefined') {
