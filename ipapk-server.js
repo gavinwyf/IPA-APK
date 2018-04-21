@@ -226,6 +226,7 @@ function main() {
       }
       var obj = files.package[0];
       var tmp_path = obj.path;
+      // console.log("tmp_path------------", files);
       parseAppAndInsertToDb(tmp_path, changelog, info => {
         storeApp(tmp_path, info["guid"], error => {
           if (error) {
@@ -234,7 +235,6 @@ function main() {
           console.log(info)
           res.send(info)
         })
-
       }, error => {
         errorHandler(error, res)
       });
@@ -277,17 +277,17 @@ function parseAppAndInsertToDb(filePath, changelog, callback, errorCallback) {
   }
   Promise.all([parse(filePath), extract(filePath, guid)]).then(values => {
     var info = values[0]
-    console.log("info--------", values[0], "------------", values[1]);
-    // info["guid"] = guid
-    // info["changelog"] = changelog
-    // excuteDB("INSERT INTO info (guid, platform, build, bundleID, version, name, changelog) VALUES (?, ?, ?, ?, ?, ?, ?);",
-    //   [info["guid"], info["platform"], info["build"], info["bundleID"], info["version"], info["name"], changelog], function (error) {
-    //     if (!error) {
-    //       callback(info)
-    //     } else {
-    //       errorCallback(error)
-    //     }
-    //   });
+    // console.log("info--------", values[0], "------------", values[1]);
+    info["guid"] = guid
+    info["changelog"] = changelog
+    excuteDB("INSERT INTO info (guid, platform, build, bundleID, version, name, changelog) VALUES (?, ?, ?, ?, ?, ?, ?);",
+      [info["guid"], info["platform"], info["build"], info["bundleID"], info["version"], info["name"], changelog], function (error) {
+        if (!error) {
+          callback(info)
+        } else {
+          errorCallback(error)
+        }
+      });
   }, reason => {
     errorCallback(reason)
   })
@@ -304,10 +304,11 @@ function storeApp(fileName, guid, callback) {
 }
 
 function parseIpa(filename) {
+  // console.log("parseIpa----------", filename)
   return new Promise(function (resolve, reject) {
     var fd = fs.openSync(filename, 'r');
     extract(fd, function (err, info, raw) {
-      console.log("parseIpa----------", err, "----------", info, "---------", raw);
+      // console.log("parseIpa----------", err, "----------", info, "---------", raw);
       if (err) reject(err);
       var data = info[0];
       var info = {}
@@ -324,11 +325,7 @@ function parseIpa(filename) {
 function parseApk(filename) {
   return new Promise(function (resolve, reject) {
 
-    ApkReader.open(filename)
-      .then(reader => reader.readManifest())
-      .then(manifest => {
-        console.log("Data-----------------", util.inspect(manifest, { depth: null }))
-      })
+    // 方法一： apkParser C写的tools  服务器上报错
     // apkParser3(filename, function (err, data) {
     //   console.log("parseApk---------", err, "-----------", data)
     //   if (err) return reject(err);
@@ -342,6 +339,24 @@ function parseApk(filename) {
     //   }
     //   resolve(info)
     // });
+
+    // 方法二： ApkReader
+    // ApkReader.open(filename)
+    //   .then(reader => reader.readManifest())
+    //   .then(manifest => {
+    //     console.log("Data-----------------", util.inspect(manifest, { depth: null }))
+    //     var data = util.inspect(manifest, { depth: null });
+
+    //   })
+
+    // 方法三： python脚本 + jar包
+    var data = JSON.parse(exec('python3 main.py ' + filename));
+    // console.log("parseApk----------", data)
+    if (!data.name) {
+      return reject(err);
+    }
+    resolve(data)
+
   });
 }
 
@@ -357,7 +372,7 @@ function parseText(text) {
 function extractApkIcon(filename, guid) {
   return new Promise(function (resolve, reject) {
     apkParser3(filename, function (err, data) {
-      console.log("extractApkIcon---------", err, "-----------", data)
+      // console.log("extractApkIcon---------", err, "-----------", data)
       if (err) return reject(err);
       var iconPath = false;
       [640, 320, 240, 160].every(i => {
