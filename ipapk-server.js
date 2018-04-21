@@ -17,7 +17,8 @@ var multiparty = require('multiparty');
 var sqlite3 = require('sqlite3');
 var uuidV4 = require('uuid/v4');
 var extract = require('ipa-extract-info');
-var apkParser3 = require("apk-parser3");
+// var apkParser3 = require("apk-parser3");
+var apkParser3 = require("apk-parser");
 require('shelljs/global');
 
 /** 格式化输入字符串**/
@@ -220,7 +221,6 @@ function main() {
         errorHandler("params error", res)
         return
       }
-      console.log("upload files----------", files.package);
       var obj = files.package[0];
       var tmp_path = obj.path;
       parseAppAndInsertToDb(tmp_path, changelog, info => {
@@ -272,7 +272,6 @@ function parseAppAndInsertToDb(filePath, changelog, callback, errorCallback) {
     errorCallback("params error")
     return;
   }
-  console.log("filePath-----------", filePath)
   Promise.all([parse(filePath), extract(filePath, guid)]).then(values => {
     var info = values[0]
     console.log("info--------", values[0], "------------", values[1]);
