@@ -306,7 +306,7 @@ function parseIpa(filename) {
     var fd = fs.openSync(filename, 'r');
     extract(fd, function (err, info, raw) {
       console.log("parseIpa----------", err, "----------", info, "---------", raw);
-      // if (err) reject(err);
+      if (err) reject(err);
       // var data = info[0];
       // var info = {}
       // info["platform"] = "ios"
@@ -322,7 +322,8 @@ function parseIpa(filename) {
 function parseApk(filename) {
   return new Promise(function (resolve, reject) {
     apkParser3(filename, function (err, data) {
-      console.log("parseApk---------", err, data)
+      console.log("parseApk---------", err, "-----------", data)
+      if (err) reject(err);
       // var package = parseText(data.package)
       // var info = {
       //   "name": data["application-label"].replace(/'/g, ""),
@@ -348,40 +349,40 @@ function parseText(text) {
 function extractApkIcon(filename, guid) {
   return new Promise(function (resolve, reject) {
     apkParser3(filename, function (err, data) {
-      var iconPath = false;
-      [640, 320, 240, 160].every(i => {
-        if (typeof data["application-icon-" + i] !== 'undefined') {
-          iconPath = data["application-icon-" + i];
-          return false;
-        }
-        return true;
-      });
-      if (!iconPath) {
-        reject("can not find icon ");
-      }
+      // var iconPath = false;
+      // [640, 320, 240, 160].every(i => {
+      //   if (typeof data["application-icon-" + i] !== 'undefined') {
+      //     iconPath = data["application-icon-" + i];
+      //     return false;
+      //   }
+      //   return true;
+      // });
+      // if (!iconPath) {
+      //   reject("can not find icon ");
+      // }
 
-      iconPath = iconPath.replace(/'/g, "")
-      var tmpOut = iconsDir + "/{0}.png".format(guid)
-      var zip = new AdmZip(filename);
-      var ipaEntries = zip.getEntries();
-      var found = false
-      ipaEntries.forEach(function (ipaEntry) {
-        if (ipaEntry.entryName.indexOf(iconPath) != -1) {
-          var buffer = new Buffer(ipaEntry.getData());
-          if (buffer.length) {
-            found = true
-            fs.writeFile(tmpOut, buffer, function (err) {
-              if (err) {
-                reject(err)
-              }
-              resolve({ "success": true })
-            })
-          }
-        }
-      })
-      if (!found) {
-        reject("can not find icon ")
-      }
+      // iconPath = iconPath.replace(/'/g, "")
+      // var tmpOut = iconsDir + "/{0}.png".format(guid)
+      // var zip = new AdmZip(filename);
+      // var ipaEntries = zip.getEntries();
+      // var found = false
+      // ipaEntries.forEach(function (ipaEntry) {
+      //   if (ipaEntry.entryName.indexOf(iconPath) != -1) {
+      //     var buffer = new Buffer(ipaEntry.getData());
+      //     if (buffer.length) {
+      //       found = true
+      //       fs.writeFile(tmpOut, buffer, function (err) {
+      //         if (err) {
+      //           reject(err)
+      //         }
+      //         resolve({ "success": true })
+      //       })
+      //     }
+      //   }
+      // })
+      // if (!found) {
+      //   reject("can not find icon ")
+      // }
     });
   })
 }
