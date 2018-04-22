@@ -5,7 +5,6 @@ from imp import reload
 from xml.dom.minidom import parse
 
 import os
-
 import sys
 
 
@@ -20,8 +19,12 @@ def getapkfile(path):
     DOMTree = parse(path)
     collection = DOMTree.documentElement
     #name先写死，解析需要解resources.arsc文件
-    apkInfo = {'build': collection.getAttribute('android:versionCode'), 'bundleID': collection.getAttribute('package'),
-               'version': collection.getAttribute('android:versionName'), 'platform': 'android', 'name': 'IOTC'}
+    apkInfo = {
+        'build': collection.getAttribute('android:versionCode'), 'bundleID': collection.getAttribute('package'),
+        'version': collection.getAttribute('android:versionName'), 'platform': 'android', 'name': 'IOTC',
+        # 'icon': DOMTree.getElementsByTagName('application')[0].getAttribute('android:icon')
+    }
+
     os.system('rm AndroidManifest.xml')
     return json.dumps(apkInfo)
 

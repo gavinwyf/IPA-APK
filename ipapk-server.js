@@ -132,7 +132,7 @@ function before(obj, method, fn) {
 function main() {
 
   console.log("staticPath--", basePath);
-  console.log("UrlPath--", "https://"+ ipAddress+":"+port);
+  console.log("UrlPath--", "https://" + ipAddress + ":" + port);
 
   var key;
   var cert;
@@ -251,7 +251,8 @@ function errorHandler(error, res) {
 
 function mapIconAndUrl(result) {
   var items = result.map(function (item) {
-    item.icon = "{0}/icon/{1}.png".format(basePath, item.guid);
+    // item.icon = "{0}/icon/{1}.png".format(basePath, item.guid);
+    item.icon = "{0}/icon/IOTC.png".format(basePath);
     if (item.platform === 'ios') {
       item.url = "itms-services://?action=download-manifest&url={0}/plist/{1}".format(basePath, item.guid);
     } else if (item.platform === 'android') {
@@ -371,44 +372,62 @@ function parseText(text) {
 
 function extractApkIcon(filename, guid) {
   return new Promise(function (resolve, reject) {
-    apkParser3(filename, function (err, data) {
-      // console.log("extractApkIcon---------", err, "-----------", data)
-      if (err) return reject(err);
-      var iconPath = false;
-      [640, 320, 240, 160].every(i => {
-        if (typeof data["application-icon-" + i] !== 'undefined') {
-          iconPath = data["application-icon-" + i];
-          return false;
-        }
-        return true;
-      });
-      if (!iconPath) {
-        reject("can not find icon ");
-      }
 
-      iconPath = iconPath.replace(/'/g, "")
-      var tmpOut = iconsDir + "/{0}.png".format(guid)
-      var zip = new AdmZip(filename);
-      var ipaEntries = zip.getEntries();
-      var found = false
-      ipaEntries.forEach(function (ipaEntry) {
-        if (ipaEntry.entryName.indexOf(iconPath) != -1) {
-          var buffer = new Buffer(ipaEntry.getData());
-          if (buffer.length) {
-            found = true
-            fs.writeFile(tmpOut, buffer, function (err) {
-              if (err) {
-                reject(err)
-              }
-              resolve({ "success": true })
-            })
-          }
-        }
-      })
-      if (!found) {
-        reject("can not find icon ")
-      }
-    });
+    resolve({ "success": true });
+    // ApkReader.open(filename)
+    //   .then(reader => reader.readManifest())
+    //   .then(manifest => {
+
+    //     console.log("Data-----------------", util.inspect(manifest, { depth: null }));
+    //     var icon = manifest.application &&  manifest.application.icon;
+    //     if (!icon) return reject(manifest);
+
+    //     console.log("icon-------------", icon)
+    //     // resolve()
+    // })
+
+    // var data = JSON.parse(exec('python3 main.py ' + filename));
+    // console.log("parseApk----------", data)
+
+    // apkParser3(filename, function (err, data) {
+    //   if (err) return reject(err);
+    //   var iconPath = false;
+    //   [640, 320, 240, 160].every(i => {
+    //     if (typeof data["application-icon-" + i] !== 'undefined') {
+    //       iconPath = data["application-icon-" + i];
+    //       return false;
+    //     }
+    //     return true;
+    //   });
+    //   if (!iconPath) {
+    //     reject("can not find icon ");
+    //   }
+    //   console.log("iconPath--------------", iconPath)
+    //   iconPath = iconPath.replace(/'/g, "")
+    //   var tmpOut = iconsDir + "/{0}.png".format(guid)
+    //   var zip = new AdmZip(filename);
+    //   var ipaEntries = zip.getEntries();
+    //   var found = false
+    //   console.log("extractApkIcon---------", tmpOut, "---------", iconPath)
+
+    //   ipaEntries.forEach(function (ipaEntry) {
+    //     if (ipaEntry.entryName.indexOf(iconPath) != -1) {
+    //       var buffer = new Buffer(ipaEntry.getData());
+    //       if (buffer.length) {
+    //         found = true
+    //         fs.writeFile(tmpOut, buffer, function (err) {
+    //           if (err) {
+    //             reject(err)
+    //           }
+    //           resolve({ "success": true })
+    //         })
+    //       }
+    //     }
+    //   })
+    //   if (!found) {
+    //     reject("can not find icon ")
+    //   }
+    // });
   })
 }
 
