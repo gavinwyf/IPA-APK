@@ -435,45 +435,46 @@ function extractApkIcon(filename, guid) {
 
 function extractIpaIcon(filename, guid) {
   return new Promise(function (resolve, reject) {
-    var tmpOut = iconsDir + "/{0}.png".format(guid)
-    var zip = new AdmZip(filename);
-    var ipaEntries = zip.getEntries();
-    var found = false;
-    ipaEntries.forEach(function (ipaEntry) {
-      if (ipaEntry.entryName.indexOf('AppIcon60x60@2x.png') != -1) {
-        found = true;
-        var buffer = new Buffer(ipaEntry.getData());
-        if (buffer.length) {
-          fs.writeFile(tmpOut, buffer, function (err) {
-            if (err) {
-              reject(err)
-            } else {
-              var execResult = exec(path.join(__dirname, 'bin', 'pngdefry -s _tmp ') + ' ' + tmpOut)
-              if (execResult.stdout.indexOf('not an -iphone crushed PNG file') != -1) {
-                resolve({ "success": true })
-              } else {
-                fs.remove(tmpOut, function (err) {
-                  if (err) {
-                    reject(err)
-                  } else {
-                    var tmp_path = iconsDir + "/{0}_tmp.png".format(guid)
-                    fs.rename(tmp_path, tmpOut, function (err) {
-                      if (err) {
-                        reject(err)
-                      } else {
-                        resolve({ "success": true })
-                      }
-                    })
-                  }
-                })
-              }
-            }
-          })
-        }
-      }
-    })
-    if (!found) {
-      reject("can not find icon ")
-    }
+    resolve({ "success": true });
+    // var tmpOut = iconsDir + "/{0}.png".format(guid)
+    // var zip = new AdmZip(filename);
+    // var ipaEntries = zip.getEntries();
+    // var found = false;
+    // ipaEntries.forEach(function (ipaEntry) {
+    //   if (ipaEntry.entryName.indexOf('AppIcon60x60@2x.png') != -1) {
+    //     found = true;
+    //     var buffer = new Buffer(ipaEntry.getData());
+    //     if (buffer.length) {
+    //       fs.writeFile(tmpOut, buffer, function (err) {
+    //         if (err) {
+    //           reject(err)
+    //         } else {
+    //           var execResult = exec(path.join(__dirname, 'bin', 'pngdefry -s _tmp ') + ' ' + tmpOut)
+    //           if (execResult.stdout.indexOf('not an -iphone crushed PNG file') != -1) {
+    //             resolve({ "success": true })
+    //           } else {
+    //             fs.remove(tmpOut, function (err) {
+    //               if (err) {
+    //                 reject(err)
+    //               } else {
+    //                 var tmp_path = iconsDir + "/{0}_tmp.png".format(guid)
+    //                 fs.rename(tmp_path, tmpOut, function (err) {
+    //                   if (err) {
+    //                     reject(err)
+    //                   } else {
+    //                     resolve({ "success": true })
+    //                   }
+    //                 })
+    //               }
+    //             })
+    //           }
+    //         }
+    //       })
+    //     }
+    //   }
+    // })
+    // if (!found) {
+    //   reject("can not find icon ")
+    // }
   })
 }
