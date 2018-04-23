@@ -66,7 +66,7 @@ var ipAddress = program.host || "localhost";
 // var basePath = "https://{0}:{1}".format(ipAddress, port);
 var outputIP = "54.187.153.153";
 var outputPort = "8888";
-var basePath = "https://" + outputIP + ":" + outputPort;
+var basePath = "http://" + outputIP + ":" + outputPort;
 
 var pageCount = 5;
 var serverDir = os.homedir() + "/.ipapk-server/"
