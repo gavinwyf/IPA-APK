@@ -64,8 +64,8 @@ var ipAddress = program.host || "localhost";
 // var ipAddress = program.host || "127.0.0.1";
 
 // var basePath = "https://{0}:{1}".format(ipAddress, port);
-// var outputIP = "54.187.153.153";
-var outputIP = "ec2-54-187-153-153.us-west-2.compute.amazonaws.com";
+var outputIP = "54.187.153.153";
+// var outputIP = "ec2-54-187-153-153.us-west-2.compute.amazonaws.com";
 var outputPort = "8888";
 var basePath = "http://" + outputIP + ":" + outputPort;
 
