@@ -37,7 +37,8 @@ module.exports = {
   deploy : {
     production : {
       user : 'ec2-user',  // ec2-user  root
-      host : 'ec2-54-202-198-206.us-west-2.compute.amazonaws.com',
+      host: '54.187.153.153',
+      // host : 'ec2-54-202-198-206.us-west-2.compute.amazonaws.com',
       ref  : 'origin/master',
       // repo : 'git@git.iotccoin.com:fe/ipapk.git',
       repo : 'git@github.com:gavinwyf/IPA-APK.git',
