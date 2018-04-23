@@ -46,8 +46,8 @@ program
   .option('-h, --host <host>', 'set host for server (defaults is your LAN ip)')
   .parse(process.argv);
 
-// var port = program.port || 1234;
-// var ipAddress = program.host || "localhost";
+var port = program.port || 1234;
+var ipAddress = program.host || "localhost";
 
 // || underscore
 //   .chain(require('os').networkInterfaces())
@@ -59,8 +59,9 @@ program
 //   .value()
 //   .address;
 
-var port = program.port || 8888;
-var ipAddress = program.host || "127.0.0.1";
+// test
+// var port = program.port || 8888;
+// var ipAddress = program.host || "127.0.0.1";
 
 // var basePath = "https://{0}:{1}".format(ipAddress, port);
 var outputIP = "54.187.153.153";
