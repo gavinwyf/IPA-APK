@@ -20,7 +20,7 @@ var extract = require('ipa-extract-info');
 var apkParser3 = require("apk-parser3");
 
 const util = require('util');
-const ApkReader = require('adbkit-apkreader');
+// const ApkReader = require('adbkit-apkreader');
 
 require('shelljs/global');
 
@@ -46,9 +46,9 @@ program
   .option('-h, --host <host>', 'set host for server (defaults is your LAN ip)')
   .parse(process.argv);
 
-var port = program.port || 1234;
+// var port = program.port || 1234;
+// var ipAddress = program.host || "localhost";
 
-var ipAddress = program.host || "localhost";
 // || underscore
 //   .chain(require('os').networkInterfaces())
 //   .values()
@@ -59,9 +59,18 @@ var ipAddress = program.host || "localhost";
 //   .value()
 //   .address;
 
+var port = program.port || 8888;
+var ipAddress = program.host || "127.0.0.1";
+
+// var basePath = "https://{0}:{1}".format(ipAddress, port);
+var outputIP = "54.187.153.153";
+var outputPort = "8888";
+var basePath = "https://" + outputIP + ":" + outputPort;
+
 var pageCount = 5;
 var serverDir = os.homedir() + "/.ipapk-server/"
-var globalCerFolder = serverDir + ipAddress;
+var globalCerFolder = serverDir + outputIP;
+// var globalCerFolder = serverDir + ipAddress;
 var ipasDir = serverDir + "ipa";
 var apksDir = serverDir + "apk";
 var iconsDir = serverDir + "icon";
@@ -110,10 +119,6 @@ excuteDB("CREATE TABLE IF NOT EXISTS info (\
 process.exit = exit
 
 // CLI
-// var basePath = "https://{0}:{1}".format(ipAddress, port);
-var outputIP = "54.187.153.153";
-var outputPort = "8888";
-var basePath = "https://" + outputIP + ":" + outputPort;
 if (!exit.exited) {
   main();
 }
