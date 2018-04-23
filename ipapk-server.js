@@ -111,7 +111,9 @@ process.exit = exit
 
 // CLI
 // var basePath = "https://{0}:{1}".format(ipAddress, port);
-var basePath = "http://54.187.153.153:8888/";
+var outputIP = "54.187.153.153";
+var outputPort = "8888";
+var basePath = "https://" + outputIP + ":" + outputPort;
 if (!exit.exited) {
   main();
 }
@@ -141,7 +143,7 @@ function main() {
     key = fs.readFileSync(globalCerFolder + '/mycert1.key', 'utf8');
     cert = fs.readFileSync(globalCerFolder + '/mycert1.cer', 'utf8');
   } catch (e) {
-    var result = exec('sh  ' + path.join(__dirname, 'bin', 'generate-certificate.sh') + ' ' + ipAddress).output;
+    var result = exec('sh  ' + path.join(__dirname, 'bin', 'generate-certificate.sh') + ' ' + outputIP).output;
     key = fs.readFileSync(globalCerFolder + '/mycert1.key', 'utf8');
     cert = fs.readFileSync(globalCerFolder + '/mycert1.cer', 'utf8');
   }
