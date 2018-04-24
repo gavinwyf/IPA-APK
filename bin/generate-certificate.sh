@@ -11,7 +11,8 @@ blackhole="/dev/null"
 
 openssl genrsa -out "$cerDir"myCA.key 2048 2> $blackhole
 
-openssl req -x509 -new -key "$cerDir"myCA.key -out "$cerDir"myCA.cer -days 730 -subj /CN="ipapk-server "$ip" Custom CA" 2> $blackhole
+openssl req -x509 -new -key "$cerDir"myCA.key -out "$cerDir"myCA.cer -days 730 -subj /CN=$ip" Custom CA" 2> $blackhole
+# openssl req -x509 -new -key "$cerDir"myCA.key -out "$cerDir"myCA.cer -days 730 -subj /CN="ipapk-server "$ip" Custom CA" 2> $blackhole
 
 openssl genrsa -out "$cerDir"mycert1.key 2048 2> $blackhole
 

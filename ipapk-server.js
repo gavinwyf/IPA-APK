@@ -67,7 +67,7 @@ var ipAddress = program.host || "localhost";
 // var outputIP = "54.187.153.153";
 // var outputPort = "8888";
 // var basePath = "https://" + outputIP + ":" + outputPort;
-var outputIP = "gavinwyf.cn";
+var outputIP = "download.iotccoin.com";
 var basePath = "https://" + outputIP;
 
 var pageCount = 5;
