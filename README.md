@@ -1,17 +1,28 @@
 # 简介
-自动生成自签名HTTPS服务器，可以快速安装ipa、apk，基于[ios-ipa-server](https://github.com/bumaociyuan/ios-ipa-server)开发
+app内容分发工具，自动生成自签名HTTPS服务器，可以快速安装ipa、apk，
+
+> 基于
+> - [ios-ipa-server](https://github.com/bumaociyuan/ios-ipa-server)开发
+> - apkParse (APKParse.jar, apkParse3 npm包，都是基于aapk实现的)
+> - ipa-extract-info (npm包)
 
 # 支持
-* OS X
-* Ubuntu
-* CentOS 7
-* 其他平台未测试
+- OS X
+- Ubuntu
+- CentOS 7
+- 其他平台未测试
 
 # 需要
-* [nodejs](https://nodejs.org/)
-* gcc
+- [nodejs](https://nodejs.org/)
+- gcc
 
 0.2.9版本 以上需要浏览器支持ES6
+
+# prd 需要
+
+由于我用的AWS CentOS 服务器，apkParse3执行不了，我用python引入的APKParse.jar包来实现的，则需要：
+- Python3
+- Java
 
 # 安装
 ```
@@ -205,8 +216,13 @@ response:
 
 
 # TODO
+- 重构服务、拆分模块。。。（都写在一个文件里面，看的头疼）
+- UI重构，提供拖拽包上传功能。。。
+- aws centOS apkParse3 Bug
+- docker
+- ...
 - token验证
 - 国际化支持
 
 # 贡献
-[zhao0](https://github.com/zhao0)、[mask2](https://github.com/mask2)
+[gavinwyf](https://github.com/gavinwyf)、[zhao0](https://github.com/zhao0)、[mask2](https://github.com/mask2)
