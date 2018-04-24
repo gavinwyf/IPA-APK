@@ -21,7 +21,7 @@ var main = new Vue({
 	            console.log(response.data)
 	            this.apps = this.apps.concat(response.data)
 	            this.apps_page++
-	            this.show_load_more_apps_button = response.data.length > 0
+	            this.show_load_more_apps_button = response.data.length > 1
 	        });
 		},
 		viewAllVersion: function (e) {

@@ -17,9 +17,9 @@ var multiparty = require('multiparty');
 var sqlite3 = require('sqlite3');
 var uuidV4 = require('uuid/v4');
 var extract = require('ipa-extract-info');
-var apkParser3 = require("apk-parser3");
+// var apkParser3 = require("apk-parser3");
 
-const util = require('util');
+// const util = require('util');
 // const ApkReader = require('adbkit-apkreader');
 
 require('shelljs/global');
@@ -181,7 +181,6 @@ function main() {
       })
     }
   });
-
   app.get(['/apps/:platform/:bundleID', '/apps/:platform/:bundleID/:page'], function (req, res, next) {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Content-Type', 'application/json');
@@ -196,6 +195,7 @@ function main() {
       })
     }
   });
+
 
   app.get('/plist/:guid', function (req, res) {
     queryDB("select name,bundleID from info where guid=?", [req.params.guid], function (error, result) {
@@ -336,7 +336,7 @@ function parseIpa(filename) {
 function parseApk(filename) {
   return new Promise(function (resolve, reject) {
 
-    // 方法一： apkParser C写的tools  服务器上报错
+    // 方法一： apkParser3 使用aapt反编译apk  CentOS服务器上报错
     // apkParser3(filename, function (err, data) {
     //   console.log("parseApk---------", err, "-----------", data)
     //   if (err) return reject(err);
