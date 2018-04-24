@@ -67,8 +67,8 @@ var ipAddress = program.host || "localhost";
 // var outputIP = "54.187.153.153";
 // var outputPort = "8888";
 // var basePath = "https://" + outputIP + ":" + outputPort;
-
-var basePath = "https://gavinwyf.cn";
+var outputIP = "gavinwyf.cn";
+var basePath = "https://" + outputIP;
 
 var pageCount = 5;
 var serverDir = os.homedir() + "/.ipapk-server/"
