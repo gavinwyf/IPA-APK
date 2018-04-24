@@ -17,6 +17,7 @@ var multiparty = require('multiparty');
 var sqlite3 = require('sqlite3');
 var uuidV4 = require('uuid/v4');
 var extract = require('ipa-extract-info');
+var CODE = require('./src/config/code');
 // var apkParser3 = require("apk-parser3");
 
 // const util = require('util');
@@ -167,6 +168,26 @@ function main() {
   app.use('/ipa', express.static(ipasDir));
   app.use('/apk', express.static(apksDir));
   app.use('/icon', express.static(iconsDir));
+
+  app.get('/allapp', function (req, res, next) {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Content-Type', 'application/json');
+    // var page = parseInt(req.params.page ? req.params.page : 1);
+    queryDB("select * from info group by platform order by uploadTime", [], function (error, result) {
+      // 1. select * from info i where (uploadTime=(select max(uploadTime) from info where platform = i.platform ))
+      // 2. select * from info where id in (select max(id) from info group by platform) order by uploadTime desc 
+      // select * from( select * from info order by uploadTime desc) as t group by platform
+      // 3. select * from( select * from info order by uploadTime) group by platform
+      // 4. select * from info group by platform order by uploadTime
+      // 5. select id,max(uploadTime) from info group by platform
+      if (result) {
+        successHandler(res, mapIconAndUrl(result));
+      } else {
+        console.log(error);
+        errorHandler(res);
+      }
+    });
+  });
   app.get(['/apps/:platform', '/apps/:platform/:page'], function (req, res, next) {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Content-Type', 'application/json');
@@ -176,7 +197,7 @@ function main() {
         if (result) {
           res.send(mapIconAndUrl(result))
         } else {
-          errorHandler(error, res)
+          errorHandler(res, error);
         }
       })
     }
@@ -190,7 +211,7 @@ function main() {
         if (result) {
           res.send(mapIconAndUrl(result))
         } else {
-          errorHandler(error, res)
+          errorHandler(res, error)
         }
       })
     }
@@ -214,7 +235,7 @@ function main() {
           res.send(rendered);
         })
       } else {
-        errorHandler(error, res)
+        errorHandler(res, error)
       }
     })
   });
@@ -223,7 +244,7 @@ function main() {
     var form = new multiparty.Form();
     form.parse(req, function (err, fields, files) {
       if (err) {
-        errorHandler(err, res);
+        errorHandler(res, err);
         return;
       }
       var changelog;
@@ -231,7 +252,7 @@ function main() {
         changelog = fields.changelog[0];
       }
       if (!files.package) {
-        errorHandler("params error", res)
+        errorHandler(res, "params error")
         return
       }
       var obj = files.package[0];
@@ -240,13 +261,13 @@ function main() {
       parseAppAndInsertToDb(tmp_path, changelog, info => {
         storeApp(tmp_path, info["guid"], error => {
           if (error) {
-            errorHandler(error, res)
+            errorHandler(res, error)
           }
           console.log(info)
           res.send(info)
         })
       }, error => {
-        errorHandler(error, res)
+        errorHandler(res, error)
       });
     });
   });
@@ -254,9 +275,21 @@ function main() {
   https.createServer(options, app).listen(port);
 }
 
-function errorHandler(error, res) {
-  console.log(error)
-  res.send({ "error": error })
+// result handle
+function successHandler(res, data){
+  res.send({
+    status: 0,
+    flag: true,
+    data
+  });
+}
+function errorHandler(res, error) {
+  // console.log(error)
+  res.send({ 
+    "status": CODE.ERROR,
+    "msg": error || "请求失败",
+    "flag": false
+  });
 }
 
 function mapIconAndUrl(result) {

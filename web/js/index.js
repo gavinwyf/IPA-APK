@@ -24,6 +24,11 @@ var main = new Vue({
 	            this.show_load_more_apps_button = response.data.length > 1
 	        });
 		},
+		// test: function(){
+		// 	axios.get("/allapp").then(response => {
+	    //         console.log("res-----------------", response.data);
+	    //     });
+		// },
 		viewAllVersion: function (e) {
 			window.location.href += "versionlist.html?platform=" + this.selected_paltform + "&bundleID=" + e.currentTarget.getAttribute('bundle-id')
 		}

@@ -26,6 +26,7 @@
         <p>iOS 10.3后 默认不信任安装的证书，需要手动信任。</p>
         <span>设置 > 通用 > 关于 > 证书信任设置 > 对需要的证书启用完全信任</span>
     </header>
+
     <div class="app_wrapper">
         <div class="platform_wrapper">
             <span>
@@ -48,6 +49,7 @@
                 </li>
             </ul>
             <div class="moreAppButton" v-on:click="loadApps" v-if="show_load_more_apps_button"><span>加载更多</span></div>
+            <!-- <div class="moreAppButton" v-on:click="test"><span>TEST</span></div> -->
         </div>
     </div>
     <div class="qrcode_wrapper">

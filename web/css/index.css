@@ -80,3 +80,17 @@ a {
 
 .changelog {display: block;overflow:hidden; text-overflow:ellipsis; }
 .moreAppButton {width:100%;padding: 0.3rem; margin-top: 10px; margin-bottom: 10px; text-align: center;font-size:1.2rem;background-color:lightgray; border-radius:0.4rem;color:#989898;width: 100%; height: 2rem;line-height: 2rem;}
+
+.back{
+  float: right;
+  padding: .05rem 1rem;
+  margin: 1.4rem 0;
+  font-size: 1.2rem;
+  border: 0.12rem solid #0076cc;
+  border-radius: 0.4rem;
+  outline: none;
+  background: #fff;
+  color: #0076cc;
+  text-align: center;
+  line-height: 2.6rem;
+}
